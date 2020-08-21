@@ -46,6 +46,7 @@
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
     "date-fns": "^2.9.0",
+    "dd-trace": "^0.24.2",
     "dotenv": "^8.2.0",
     "easy-peasy": "^3.3.0",
     "email-validator": "^1.2.3",
