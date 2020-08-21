@@ -95,7 +95,8 @@
     "url-regex": "^4.1.1",
     "use-media": "^1.4.0",
     "useragent": "^2.2.1",
-    "uuid": "^3.4.0"
+    "uuid": "^3.4.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.3",

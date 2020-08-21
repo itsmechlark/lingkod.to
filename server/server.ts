@@ -17,6 +17,7 @@ import routes from "./routes";
 
 import "./cron";
 import "./passport";
+import logger from "./logger";
 
 const port = env.PORT;
 const app = nextApp({ dir: "./client", dev: env.isDev });
@@ -30,6 +31,8 @@ app.prepare().then(async () => {
   if (env.isDev) {
     server.use(morgan("dev"));
   } else if (env.SENTRY_PRIVATE_DSN) {
+    server.use(morgan("combined", { stream: logger.stream }));
+
     Sentry.init({
       dsn: env.SENTRY_PRIVATE_DSN,
       environment: process.env.NODE_ENV
