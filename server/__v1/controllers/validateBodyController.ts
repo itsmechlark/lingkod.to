@@ -3,7 +3,7 @@ import { validationResult } from "express-validator";
 import { body } from "express-validator";
 import { RequestHandler } from "express";
 import { promisify } from "util";
-import urlRegex from "url-regex";
+import urlRegex from "url-regex-safe";
 import axios from "axios";
 import dns from "dns";
 import URL from "url";

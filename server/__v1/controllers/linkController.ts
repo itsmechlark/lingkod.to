@@ -5,7 +5,7 @@ import isbot from "isbot";
 import generate from "nanoid/generate";
 import ua from "universal-analytics";
 import URL from "url";
-import urlRegex from "url-regex";
+import urlRegex from "url-regex-safe";
 import { promisify } from "util";
 import { deleteDomain, getDomain, setDomain } from "../db/domain";
 import { addIP } from "../db/ip";
