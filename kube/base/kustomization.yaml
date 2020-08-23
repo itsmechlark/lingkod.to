@@ -1,0 +1,9 @@
+commonLabels:
+  app: kutt
+  environment: staging
+  org: itsmechlark
+
+resources:
+- configMap.yaml
+- deployment.yaml
+- service.yaml
