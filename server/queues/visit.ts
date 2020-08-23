@@ -1,9 +1,10 @@
 import useragent from "useragent";
-import geoip from "geoip-lite";
+import { IPinfoWrapper, IPinfo } from "node-ipinfo";
 import URL from "url";
 
 import query from "../queries";
 import { getStatsLimit } from "../utils";
+import env from "../env";
 
 const browsersList = ["IE", "Firefox", "Chrome", "Opera", "Safari", "Edge"];
 const osList = ["Windows", "Mac OS", "Linux", "Android", "iOS"];
@@ -11,6 +12,7 @@ const filterInBrowser = agent => item =>
   agent.family.toLowerCase().includes(item.toLocaleLowerCase());
 const filterInOs = agent => item =>
   agent.os.family.toLowerCase().includes(item.toLocaleLowerCase());
+const ipinfoWrapper = new IPinfoWrapper(env.IPINFO_TOKEN);
 
 export default function({ data }) {
   const tasks = [];
@@ -22,15 +24,16 @@ export default function({ data }) {
     const [browser = "Other"] = browsersList.filter(filterInBrowser(agent));
     const [os = "Other"] = osList.filter(filterInOs(agent));
     const referrer = data.referrer && URL.parse(data.referrer).hostname;
-    const location = geoip.lookup(data.realIP);
-    const country = location && location.country;
+
     tasks.push(
-      query.visit.add({
-        browser: browser.toLowerCase(),
-        country: country || "Unknown",
-        id: data.link.id,
-        os: os.toLowerCase().replace(/\s/gi, ""),
-        referrer: (referrer && referrer.replace(/\./gi, "[dot]")) || "Direct"
+      ipinfoWrapper.lookupIp(data.realIP).then((response: IPinfo) => {
+        query.visit.add({
+          browser: browser.toLowerCase(),
+          country: response.country || "Unknown",
+          id: data.link.id,
+          os: os.toLowerCase().replace(/\s/gi, ""),
+          referrer: (referrer && referrer.replace(/\./gi, "[dot]")) || "Direct"
+        });
       })
     );
   }

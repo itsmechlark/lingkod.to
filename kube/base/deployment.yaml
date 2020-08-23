@@ -119,6 +119,11 @@ spec:
             secretKeyRef:
               name: kutt-secrets
               key: safe-browsing-key
+        - name: IPINFO_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: kutt-secrets
+              key: ipinfo-token
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:

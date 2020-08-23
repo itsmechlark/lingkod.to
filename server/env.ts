@@ -43,7 +43,8 @@ const env = cleanEnv(process.env, {
   REPORT_EMAIL: str({ default: "" }),
   CONTACT_EMAIL: str({ default: "" }),
   SENTRY_PRIVATE_DSN: str({ default: "" }),
-  SENTRY_PUBLIC_DSN: str({ default: "" })
+  SENTRY_PUBLIC_DSN: str({ default: "" }),
+  IPINFO_TOKEN: str({ default: "" })
 });
 
 export default env;
