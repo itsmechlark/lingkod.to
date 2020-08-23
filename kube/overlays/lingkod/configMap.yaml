@@ -5,4 +5,5 @@ metadata:
 data:
   domain: "lingkod.to"
   node-env: "production"
+  redis-db: "1"
   site-name: "Lingkod"

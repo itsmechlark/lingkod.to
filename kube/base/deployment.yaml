@@ -79,6 +79,11 @@ spec:
             configMapKeyRef:
               name: kutt-config
               key: node-env
+        - name: REDIS_DB
+          valueFrom:
+            configMapKeyRef:
+              name: kutt-config
+              key: redis-db
         - name: REPORT_EMAIL
           valueFrom:
             configMapKeyRef:
