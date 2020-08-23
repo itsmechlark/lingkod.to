@@ -1,5 +1,11 @@
 FROM node:12-alpine
 
+ARG GITHUB_SHA
+ARG GITHUB_REF
+
+ENV KUTT_SHA=$GITHUB_SHA
+ENV KUTT_REF=$GITHUB_REF
+
 RUN apk add --update bash
 
 # Setting working directory. 

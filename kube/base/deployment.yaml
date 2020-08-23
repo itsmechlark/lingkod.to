@@ -17,7 +17,7 @@ spec:
         - name: github-registry-secret
       containers:
       - name: web
-        image: docker.pkg.github.com/itsmechlark/kutt/base:latest
+        image: kutt/kutt
         ports:
         - containerPort: 3000
           protocol: TCP

@@ -1,0 +1,70 @@
+name: Lingkod Deployment
+
+on:
+  push:
+    branches:
+      - master
+
+    tags:
+      - v*
+
+env:
+  PROJECT_NAME: lingkod
+  DO_ACCESS_TOKEN: ${{ secrets.DO_ACCESS_TOKEN }}
+  DO_CLUSTER: ${{ secrets.DO_CLUSTER }}
+
+jobs:
+
+  # Push image to GitHub Packages.
+  # See also https://docs.docker.com/docker-hub/builds/
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+      - name: Build image
+        run: |-
+          docker build \
+            --tag "docker.pkg.github.com/${{ github.repository }}/$PROJECT_NAME:$GITHUB_SHA" \
+            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+            --build-arg GITHUB_REF="$GITHUB_REF" \
+            .
+
+      # Push the Docker image to Github Docker Registry
+      - name: Publish
+        run: |-
+          docker push "docker.pkg.github.com/${{ github.repository }}/$PROJECT_NAME:$GITHUB_SHA"
+      
+      # Download and Install DigitalOcean CLI
+      - name: Install DigitalOcean CLI
+        run: |
+          curl -OL https://github.com/digitalocean/doctl/releases/download/v1.46.0/doctl-1.46.0-linux-amd64.tar.gz
+          tar xf doctl-1.46.0-linux-amd64.tar.gz
+          chmod u+x ./doctl && sudo mv ./doctl /usr/local/bin
+
+      # Authenticate with DigitalOcean CLI
+      - name: Authenticate with DigitalOcean CLI
+        run: |
+          doctl auth init -t "${DO_ACCESS_TOKEN}"
+          doctl kubernetes cluster kubeconfig save "${DO_CLUSTER}"
+
+      # Set up kustomize
+      - name: Set up Kustomize
+        run: |-
+          curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+          chmod u+x ./kustomize && sudo mv ./kustomize /usr/local/bin
+
+      # Deploy the Docker image to the GKE cluster
+      - name: Deploy
+        run: |-
+          cd ./kube/overlays/${PROJECT_NAME}/
+          kustomize edit set image kutt/kutt=docker.pkg.github.com/${{ github.repository }}/$PROJECT_NAME:$GITHUB_SHA
+          kustomize build . | kubectl apply -f -
+          kubectl rollout status deployment/${PROJECT_NAME}-kutt-deployment
+          kubectl get services -o wide

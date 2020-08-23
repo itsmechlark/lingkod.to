@@ -1,0 +1,9 @@
+namePrefix: lingkod-
+commonLabels:
+  app: lingkod-kutt
+  environment: production
+  org: lingkod
+patchesStrategicMerge:
+- configMap.yaml
+resources:
+- ../../base
