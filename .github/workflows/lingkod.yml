@@ -79,4 +79,3 @@ jobs:
           kustomize edit set image kutt/kutt=docker.pkg.github.com/${{ github.repository }}/$PROJECT_NAME:$GITHUB_SHA
           kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/${PROJECT_NAME}-kutt-deployment
-          kubectl get services -o wide
