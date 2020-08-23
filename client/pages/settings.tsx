@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import React from "react";
 
+import { DISALLOW_DOMAIN } from "../consts";
 import SettingsDeleteAccount from "../components/Settings/SettingsDeleteAccount";
 import SettingsPassword from "../components/Settings/SettingsPassword";
 import SettingsDomain from "../components/Settings/SettingsDomain";
@@ -25,8 +26,8 @@ const SettingsPage: NextPage = () => {
           </Span>
           .
         </H1>
-        <Divider mt={4} mb={48} />
-        <SettingsDomain />
+        {!DISALLOW_DOMAIN && <Divider mt={4} mb={48} />}
+        {!DISALLOW_DOMAIN && <SettingsDomain />}
         <Divider mt={4} mb={48} />
         <SettingsPassword />
         <Divider mt={4} mb={48} />

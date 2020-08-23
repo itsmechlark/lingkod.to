@@ -225,3 +225,7 @@ export const signupAccess: Handler = (req, res, next) => {
   if (!env.DISALLOW_REGISTRATION) return next();
   return res.status(403).send({ message: "Registration is not allowed." });
 };
+
+export const bypass: Handler = async (req, res, next) => {
+  return next();
+};

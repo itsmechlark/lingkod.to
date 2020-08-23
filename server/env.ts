@@ -24,6 +24,7 @@ const env = cleanEnv(process.env, {
   NON_USER_COOLDOWN: num({ default: 10 }),
   DEFAULT_MAX_STATS_PER_LINK: num({ default: 5000 }),
   DISALLOW_ANONYMOUS_LINKS: bool({ default: false }),
+  DISALLOW_DOMAIN: bool({ default: false }),
   DISALLOW_REGISTRATION: bool({ default: false }),
   CUSTOM_DOMAIN_USE_HTTPS: bool({ default: false }),
   JWT_SECRET: str(),
