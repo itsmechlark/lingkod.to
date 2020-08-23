@@ -5,5 +5,8 @@ commonLabels:
   org: lingkod
 patchesStrategicMerge:
 - configMap.yaml
-resources:
+bases:
 - ../../base
+resources:
+- secrets.yaml
+
