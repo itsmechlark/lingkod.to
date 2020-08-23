@@ -10,18 +10,31 @@ on:
 
 env:
   PROJECT_NAME: lingkod
-  DO_ACCESS_TOKEN: ${{ secrets.DO_ACCESS_TOKEN }}
-  DO_CLUSTER: ${{ secrets.DO_CLUSTER }}
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
 
 jobs:
+  sentry-create-release:
+    name: Create Release to Sentry
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
 
-  # Push image to GitHub Packages.
-  # See also https://docs.docker.com/docker-hub/builds/
+      - name: Install Sentry CLI
+        run: curl -sL https://sentry.io/get-cli/ | sudo bash
+      - name: Create a release
+        run: sentry-cli releases new -p lingkod-to-backend -p lingkod-to-frontend $GITHUB_SHA
+      - name: Associate commits with the release
+        run: sentry-cli releases set-commits --auto $GITHUB_SHA
+  
   setup-build-publish-deploy:
+    needs: sentry-create-release
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
-
+    env:
+      DO_ACCESS_TOKEN: ${{ secrets.DO_ACCESS_TOKEN }}
+      DO_CLUSTER: ${{ secrets.DO_CLUSTER }}
     steps:
       - uses: actions/checkout@v2
 
@@ -79,3 +92,15 @@ jobs:
           kustomize edit set image kutt/kutt=docker.pkg.github.com/${{ github.repository }}/$PROJECT_NAME:$GITHUB_SHA
           kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/${PROJECT_NAME}-kutt-deployment
+
+  sentry-finish-release:
+    name: Finalizing Release to Sentry
+    needs: setup-build-publish-deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Sentry CLI
+        run: curl -sL https://sentry.io/get-cli/ | sudo bash
+      - name: Finalizing Releases
+        run: sentry-cli releases finalize $GITHUB_SHA
