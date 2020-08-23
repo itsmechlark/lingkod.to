@@ -37,7 +37,8 @@ app.prepare().then(async () => {
 
     Sentry.init({
       dsn: env.SENTRY_PRIVATE_DSN,
-      environment: process.env.NODE_ENV
+      environment: process.env.NODE_ENV,
+      release: process.env.KUTT_SHA
     });
 
     server.use(
