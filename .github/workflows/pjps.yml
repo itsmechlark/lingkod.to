@@ -23,7 +23,7 @@ jobs:
       - name: Install Sentry CLI
         run: curl -sL https://sentry.io/get-cli/ | sudo bash
       - name: Create a release
-        run: sentry-cli releases new -p pjps-to-backend -p pjps-to-frontend $GITHUB_SHA
+        run: sentry-cli releases new -p ${PROJECT_NAME}-to-backend -p ${PROJECT_NAME}-to-frontend $GITHUB_SHA
       - name: Associate commits with the release
         run: sentry-cli releases set-commits --auto $GITHUB_SHA
   
@@ -94,7 +94,7 @@ jobs:
           cd ./kube/overlays/${PROJECT_NAME}/
           kustomize edit set image kutt/kutt=docker.pkg.github.com/${{ github.repository }}/$PROJECT_NAME:$GITHUB_SHA
           kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment/${PROJECT_NAME}-kutt-deployment
+          kubectl rollout status deployment/${PROJECT_NAME}-kutt
 
   sentry-finish-release:
     name: Finalizing Release to Sentry
