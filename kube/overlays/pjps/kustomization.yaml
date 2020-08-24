@@ -1,0 +1,11 @@
+namePrefix: pjps-
+commonLabels:
+  app: pjps-kutt
+  environment: production
+  org: pjps
+patchesStrategicMerge:
+- configMap.yaml
+bases:
+- ../../base
+resources:
+- secrets.yaml
