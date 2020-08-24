@@ -2,7 +2,8 @@ commonLabels:
   app: kutt
   environment: staging
   org: itsmechlark
-
+commonAnnotations:
+  com.datadoghq.ad.tags: '["service:to.itsmechlark.com", "environment:staging"]'
 resources:
 - configMap.yaml
 - deployment.yaml

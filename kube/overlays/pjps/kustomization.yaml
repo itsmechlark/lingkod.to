@@ -3,6 +3,8 @@ commonLabels:
   app: pjps-kutt
   environment: production
   org: pjps
+commonAnnotations:
+  com.datadoghq.ad.tags: '["service:pjps.to", "environment:production"]'
 patchesStrategicMerge:
 - configMap.yaml
 bases:

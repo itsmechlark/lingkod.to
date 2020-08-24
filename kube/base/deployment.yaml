@@ -56,6 +56,30 @@ spec:
             configMapKeyRef:
               name: kutt
               key: domain
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: DD_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: kutt
+              key: node-env
+        - name: DD_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: kutt
+              key: domain
+        - name: DD_PROFILING_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: kutt
+              key: dd-profiling
+        - name: DD_TRACE_ANALYTICS_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: kutt
+              key: dd-trace-analytics
         - name: DISALLOW_ANONYMOUS_LINKS
           valueFrom:
             configMapKeyRef:

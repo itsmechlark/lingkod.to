@@ -3,6 +3,8 @@ commonLabels:
   app: lingkod-kutt
   environment: production
   org: lingkod
+commonAnnotations:
+  com.datadoghq.ad.tags: '["service:lingkod.to", "environment:production"]'
 patchesStrategicMerge:
 - configMap.yaml
 bases:

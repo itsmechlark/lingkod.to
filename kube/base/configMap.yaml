@@ -5,6 +5,8 @@ metadata:
 data:
   admin-emails: "clark@itsmechlark.com"
   contact-email: "security@itsmechlark.com"
+  dd-profiling: "true"
+  dd-trace-analytics: "true"
   disallow-anonymous: "true"
   disallow-domain: "true"
   disallow-reg: "true"
