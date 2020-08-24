@@ -9,4 +9,3 @@ bases:
 - ../../base
 resources:
 - secrets.yaml
-

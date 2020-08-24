@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: kutt-config
+  name: kutt
 data:
   domain: "lingkod.to"
   node-env: "production"

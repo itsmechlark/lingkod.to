@@ -1,10 +1,9 @@
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
-  name: kutt-lb
+  name: kutt
 spec:
-  type: LoadBalancer
   selector:
     app: kutt
   ports:

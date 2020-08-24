@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: kutt-config
+  name: kutt
 data:
   admin-emails: "clark@itsmechlark.com"
   contact-email: "security@itsmechlark.com"
