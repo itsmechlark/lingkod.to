@@ -1,5 +1,6 @@
 import useragent from "useragent";
-import { IPinfoWrapper, IPinfo } from "node-ipinfo";
+import IPinfoWrapper from "node-ipinfo";
+import IPinfo from "node-ipinfo/dist/src/model/ipinfo.model";
 import URL from "url";
 
 import query from "../queries";
