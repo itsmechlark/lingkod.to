@@ -65,6 +65,11 @@ spec:
             configMapKeyRef:
               name: kutt
               key: node-env
+        - name: DD_LOGS_INJECTION
+          valueFrom:
+            configMapKeyRef:
+              name: kutt
+              key: dd-logs-injection
         - name: DD_SERVICE
           valueFrom:
             configMapKeyRef:
