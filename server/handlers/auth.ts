@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import nanoid from "nanoid";
 import uuid from "uuid/v4";
 import axios from "axios";
+import tracer from "dd-trace";
 
 import { CustomError } from "../utils";
 import * as utils from "../utils";
@@ -14,16 +15,30 @@ import * as mail from "../mail";
 import query from "../queries";
 import env from "../env";
 
+const tracerSpan = (user: User) => {
+  const span = tracer.scope().active();
+
+  if (span && user) {
+    span.setTag("user.id", user.id);
+  }
+};
+
 const authenticate = (
   type: "jwt" | "local" | "localapikey",
   error: string,
   isStrict = true
 ) =>
   async function auth(req, res, next) {
-    if (req.user) return next();
+    if (req.user) {
+      tracerSpan(req.user);
+
+      return next();
+    }
 
     passport.authenticate(type, (err, user) => {
       if (err) return next(err);
+
+      tracerSpan(user);
 
       if (!user && isStrict) {
         throw new CustomError(error, 401);
