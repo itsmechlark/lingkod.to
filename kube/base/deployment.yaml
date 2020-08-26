@@ -80,6 +80,11 @@ spec:
             configMapKeyRef:
               name: kutt
               key: dd-profiling
+        - name: DD_RUNTIME_METRICS_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: kutt
+              key: dd-runtime-metrics
         - name: DD_TRACE_ANALYTICS_ENABLED
           valueFrom:
             configMapKeyRef:
