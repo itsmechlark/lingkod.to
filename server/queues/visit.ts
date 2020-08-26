@@ -30,7 +30,7 @@ export default function({ data }) {
       ipinfoWrapper.lookupIp(data.realIP).then((response: IPinfo) => {
         query.visit.add({
           browser: browser.toLowerCase(),
-          country: response.country || "Unknown",
+          country: response.countryCode || "Unknown",
           id: data.link.id,
           os: os.toLowerCase().replace(/\s/gi, ""),
           referrer: (referrer && referrer.replace(/\./gi, "[dot]")) || "Direct"
