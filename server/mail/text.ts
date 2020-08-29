@@ -10,3 +10,11 @@ export const resetMailText = `A password reset has been requested for your accou
 Please click on the button below to reset your password. There's no need to take any action if you didn't request this.
 
 https://{{domain}}/{{resetpassword}}`;
+
+export const inviteMailText = `Hey there!
+
+You've been invited to join the {{site_name}} account for URL shortening. A new account has been created for you with the following credentials:
+{{email}}
+
+Set a password for your account using the link below:
+https://{{domain}}/join/{{invitation}}`;

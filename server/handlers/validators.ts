@@ -26,6 +26,7 @@ export const preservedUrls = [
   "settings",
   "stats",
   "verify",
+  "join",
   "api",
   "404",
   "static",
@@ -458,3 +459,18 @@ export const bannedHost = async (domain: string) => {
     throw new CustomError("URL is containing malware/scam.", 400);
   }
 };
+
+export const invite = [
+  body("email", "Email is not valid.")
+    .exists({ checkFalsy: true, checkNull: true })
+    .trim()
+    .isEmail()
+    .isLength({ min: 0, max: 255 })
+    .withMessage("Email length must be max 255.")
+    .custom(async (value, { req }) => {
+      const user = await query.user.find({ email: value });
+
+      if (user?.verified) return Promise.reject();
+    })
+    .withMessage("You can't use this email address.")
+];

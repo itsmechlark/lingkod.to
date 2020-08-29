@@ -24,4 +24,14 @@ router.post(
   asyncHandler(user.remove)
 );
 
+router.post(
+  "/invite",
+  asyncHandler(auth.apikey),
+  asyncHandler(auth.jwt),
+  auth.admin,
+  validators.invite,
+  asyncHandler(helpers.verify),
+  asyncHandler(user.inviteToken)
+);
+
 export default router;

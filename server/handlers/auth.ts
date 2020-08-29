@@ -123,7 +123,7 @@ export const recaptcha: Handler = async (req, res, next) => {
 };
 
 export const admin: Handler = async (req, res, next) => {
-  if (req.user.admin) return next();
+  if (req.user && req.user.admin) return next();
   throw new CustomError("Unauthorized", 401);
 };
 

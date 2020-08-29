@@ -14,6 +14,7 @@ import * as Sentry from "@sentry/node";
 import * as helpers from "./handlers/helpers";
 import * as links from "./handlers/links";
 import * as auth from "./handlers/auth";
+import * as users from "./handlers/users";
 import __v1Routes from "./__v1";
 import routes from "./routes";
 
@@ -61,6 +62,10 @@ app.prepare().then(async () => {
 
   server.use("/api/v2", routes);
   server.use("/api", __v1Routes);
+
+  server.get("/join/:invitationToken?", asyncHandler(users.join), (req, res) =>
+    app.render(req, res, "/reset-password", { token: req.token })
+  );
 
   server.get(
     "/reset-password/:resetPasswordToken?",

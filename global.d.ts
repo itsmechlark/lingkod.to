@@ -13,6 +13,7 @@ interface User {
   created_at: string;
   email: string;
   password: string;
+  invitation_token?: string;
   reset_password_expires?: string;
   reset_password_token?: string;
   updated_at: string;

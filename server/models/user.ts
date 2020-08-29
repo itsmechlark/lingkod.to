@@ -19,6 +19,7 @@ export async function createUserTable(knex: Knex) {
         .string("email")
         .unique()
         .notNullable();
+      table.string("invitation_token");
       table.string("password").notNullable();
       table.dateTime("reset_password_expires");
       table.string("reset_password_token");

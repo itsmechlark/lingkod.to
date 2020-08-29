@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import uuid from "uuid/v4";
 import { addMinutes } from "date-fns";
 
@@ -82,4 +83,35 @@ export const remove = async (user: User) => {
   redis.remove.user(user);
 
   return !!deletedUser;
+};
+
+interface Invite {
+  email: string;
+  token: string;
+}
+
+export const invite = async (params: Invite, user?: User) => {
+  const salt = await bcrypt.genSalt(12);
+  const password = await bcrypt.hash(uuid(), salt);
+
+  const data = {
+    email: params.email,
+    invitation_token: params.token,
+    password: password
+  };
+
+  if (user) {
+    await knex<User>("users")
+      .where("id", user.id)
+      .update({ ...data, updated_at: new Date().toISOString() });
+  } else {
+    await knex<User>("users").insert(data);
+  }
+
+  redis.remove.user(user);
+
+  return {
+    ...user,
+    ...data
+  };
 };
