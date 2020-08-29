@@ -4,6 +4,7 @@ import React from "react";
 import { DISALLOW_DOMAIN } from "../consts";
 import SettingsDeleteAccount from "../components/Settings/SettingsDeleteAccount";
 import SettingsPassword from "../components/Settings/SettingsPassword";
+import SettingsInvite from "../components/Settings/SettingsInvite";
 import SettingsDomain from "../components/Settings/SettingsDomain";
 import SettingsApi from "../components/Settings/SettingsApi";
 import AppWrapper from "../components/AppWrapper";
@@ -15,6 +16,7 @@ import { useStoreState } from "../store";
 
 const SettingsPage: NextPage = () => {
   const email = useStoreState(s => s.auth.email);
+  const isAdmin = useStoreState(s => s.auth.isAdmin);
 
   return (
     <AppWrapper>
@@ -32,6 +34,8 @@ const SettingsPage: NextPage = () => {
         <SettingsPassword />
         <Divider mt={4} mb={48} />
         <SettingsApi />
+        {isAdmin && <Divider mt={4} mb={48} />}
+        {isAdmin && <SettingsInvite />}
         <Divider mt={4} mb={48} />
         <SettingsDeleteAccount />
       </Col>

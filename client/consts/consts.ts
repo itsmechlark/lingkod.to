@@ -24,6 +24,7 @@ export enum APIv2 {
   AuthChangePassword = "/api/v2/auth/change-password",
   AuthGenerateApikey = "/api/v2/auth/apikey",
   Users = "/api/v2/users",
+  Invite = "/api/v2/users/invite",
   Domains = "/api/v2/domains",
   Links = "/api/v2/links"
 }
