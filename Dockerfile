@@ -27,4 +27,4 @@ RUN chmod +x wait-for-it.sh
 EXPOSE 3000
 
 # Running the app
-CMD [ "npm", "start" ]
+CMD [ "node", "production-server/server.js" ]
