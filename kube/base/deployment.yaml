@@ -200,6 +200,11 @@ spec:
             secretKeyRef:
               name: kutt
               key: mail-user
+        - name: MAIL_FROM
+          valueFrom:
+            secretKeyRef:
+              name: kutt
+              key: mail-from
         - name: RECAPTCHA_SECRET_KEY
           valueFrom:
             secretKeyRef:
