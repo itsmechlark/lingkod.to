@@ -6,24 +6,23 @@ ARG GITHUB_REF
 ENV KUTT_SHA=$GITHUB_SHA
 ENV KUTT_REF=$GITHUB_REF
 ENV DD_VERSION=$GITHUB_SHA
+ENV APP_HOME="/app"
 
 RUN apk add --update bash
 
-# Setting working directory. 
-WORKDIR /usr/src/app
+RUN mkdir -p "${APP_HOME}"
+WORKDIR "${APP_HOME}"
 
 # Installing dependencies
-COPY package*.json ./
+COPY package*.json "${APP_HOME}/"
 RUN npm install
 
-# Copying source files
+# Copying build source files
 COPY . .
+RUN npm run build
 
 # Give permission to run script
-RUN chmod +x ./wait-for-it.sh
-
-# Build files
-RUN npm run build
+RUN chmod +x wait-for-it.sh
 
 EXPOSE 3000
 

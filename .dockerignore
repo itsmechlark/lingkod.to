@@ -4,3 +4,6 @@
 node_modules
 production-server
 kube
+Dockerfile
+docker-compose.yml
+log/*.log
