@@ -3,7 +3,6 @@ kind: ConfigMap
 metadata:
   name: kutt
 data:
-  admin-emails: "admin@pjps.org.ph"
   domain: "pjps.to"
   node-env: "production"
   redis-db: "2"

@@ -3,7 +3,6 @@ kind: ConfigMap
 metadata:
   name: kutt
 data:
-  admin-emails: "clark@itsmechlark.com"
   contact-email: "security@itsmechlark.com"
   dd-profiling: "true"
   dd-logs-injection: "true"

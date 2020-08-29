@@ -36,11 +36,6 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 5
         env:
-        - name: ADMIN_EMAILS
-          valueFrom:
-            configMapKeyRef:
-              name: kutt
-              key: admin-emails
         - name: CONTACT_EMAIL
           valueFrom:
             configMapKeyRef:
@@ -145,6 +140,11 @@ spec:
             configMapKeyRef:
               name: kutt
               key: user-limit
+        - name: ADMIN_EMAILS
+          valueFrom:
+            secretKeyRef:
+              name: kutt
+              key: admin-emails
         - name: DB_HOST
           valueFrom:
             secretKeyRef:
