@@ -10,7 +10,7 @@ import dns from "dns";
 import * as validators from "./validators";
 import { CreateLinkReq } from "./types";
 import { CustomError } from "../utils";
-import transporter from "../mail/mail";
+import { sendMail } from "../mail/mail";
 import * as utils from "../utils";
 import query from "../queries";
 import queue from "../queues";
@@ -179,20 +179,24 @@ export const remove: Handler = async (req, res) => {
 export const report: Handler = async (req, res) => {
   const { link } = req.body;
 
-  const mail = await transporter.sendMail({
-    from: env.MAIL_FROM || env.MAIL_USER,
-    to: env.REPORT_EMAIL,
+  return await sendMail({
+    to: [env.REPORT_EMAIL],
     subject: "[REPORT]",
     text: link,
     html: link
-  });
-
-  if (!mail.accepted.length) {
-    throw new CustomError("Couldn't submit the report. Try again later.");
-  }
-  return res
-    .status(200)
-    .send({ message: "Thanks for the report, we'll take actions shortly." });
+  })
+    .then(msg => {
+      console.log(msg);
+      return res.status(200).json({
+        message: "Thanks for the report, we'll take actions shortly."
+      });
+    })
+    .catch(error => {
+      console.log(error);
+      return res
+        .status(400)
+        .json({ error: "Couldn't submit the report. Try again later." });
+    });
 };
 
 export const ban: Handler = async (req, res) => {
