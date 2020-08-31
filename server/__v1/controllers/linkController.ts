@@ -19,7 +19,7 @@ import {
   getStats,
   getUserLinksCount
 } from "../db/link";
-import transporter from "../../mail/mail";
+import { sendMail } from "../../mail/mail";
 import * as redis from "../../redis";
 import { addProtocol, generateShortLink, getStatsCacheTime } from "../../utils";
 import {
@@ -345,21 +345,24 @@ export const reportLink: Handler = async (req, res) => {
     });
   }
 
-  const mail = await transporter.sendMail({
-    from: env.MAIL_FROM || env.MAIL_USER,
-    to: env.REPORT_MAIL,
+  return await sendMail({
+    to: [env.REPORT_MAIL],
     subject: "[REPORT]",
     text: req.body.link,
     html: req.body.link
-  });
-  if (mail.accepted.length) {
-    return res
-      .status(200)
-      .json({ message: "Thanks for the report, we'll take actions shortly." });
-  }
-  return res
-    .status(400)
-    .json({ error: "Couldn't submit the report. Try again later." });
+  })
+    .then(msg => {
+      console.log(msg);
+      return res.status(200).json({
+        message: "Thanks for the report, we'll take actions shortly."
+      });
+    })
+    .catch(error => {
+      console.log(error);
+      return res
+        .status(400)
+        .json({ error: "Couldn't submit the report. Try again later." });
+    });
 };
 
 export const ban: Handler = async (req, res) => {
