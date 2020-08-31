@@ -57,6 +57,10 @@ const authenticate = (
       }
 
       if (user) {
+        if (req.visitor) {
+          req.visitor.set("uid", user.id);
+        }
+
         req.user = {
           ...user,
           admin: utils.isAdmin(user.email)
