@@ -3,7 +3,9 @@ kind: ConfigMap
 metadata:
   name: kutt
 data:
-  domain: "lingkod.to"
-  node-env: "production"
-  redis-db: "1"
-  site-name: "Lingkod"
+  DD_ENV: "production"
+  DD_SERVICE: "lingkod.to"
+  DEFAULT_DOMAIN: "lingkod.to"
+  NODE_ENV: "production"
+  REDIS_DB: "1"
+  SITE_NAME: "Lingkod"

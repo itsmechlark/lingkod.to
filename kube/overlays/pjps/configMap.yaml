@@ -3,7 +3,9 @@ kind: ConfigMap
 metadata:
   name: kutt
 data:
-  domain: "pjps.to"
-  node-env: "production"
-  redis-db: "2"
-  site-name: "PJPS"
+  DD_ENV: "production"
+  DD_SERVICE: "pjps.to"
+  DEFAULT_DOMAIN: "pjps.to"
+  NODE_ENV: "production"
+  REDIS_DB: "2"
+  SITE_NAME: "PJPS"
