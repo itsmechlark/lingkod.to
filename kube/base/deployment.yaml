@@ -43,3 +43,18 @@ spec:
             name: kutt
         - secretRef:
             name: kutt
+      initContainers:
+      - name: web-migrate
+        image: kutt/kutt
+        command: ["npm"]
+        args: ["run", "migrate"]
+        env:
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        envFrom:
+        - configMapRef:
+            name: kutt
+        - secretRef:
+            name: kutt
