@@ -132,6 +132,7 @@
     "@types/redis": "^2.8.14",
     "@types/reflexbox": "^4.0.0",
     "@types/styled-components": "^4.1.8",
+    "@types/universal-analytics": "^0.4.4",
     "@typescript-eslint/eslint-plugin": "^2.16.0",
     "@typescript-eslint/parser": "^2.16.0",
     "babel": "^6.23.0",

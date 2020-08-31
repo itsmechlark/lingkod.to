@@ -9,6 +9,7 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import nextApp from "next";
+import ua from "universal-analytics";
 import * as Sentry from "@sentry/node";
 
 import * as helpers from "./handlers/helpers";
@@ -47,6 +48,12 @@ app.prepare().then(async () => {
         ip: true,
         user: ["id", "email"]
       })
+    );
+  }
+
+  if (env.GOOGLE_ANALYTICS_UNIVERSAL) {
+    server.use(
+      ua.middleware(env.GOOGLE_ANALYTICS_UNIVERSAL, { cookieName: "_ga" })
     );
   }
 

@@ -1,4 +1,5 @@
 type Raw = import("knex").Raw;
+type Visitor = import("universal-analytics").Visitor;
 
 type Match<T> = {
   [K in keyof T]?: T[K] | [">" | ">=" | "<=" | "<", T[K]];
@@ -149,5 +150,6 @@ declare namespace Express {
     protectedLink?: string;
     token?: string;
     user: UserJoined;
+    visitor?: Visitor;
   }
 }

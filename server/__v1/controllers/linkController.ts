@@ -3,7 +3,6 @@ import dns from "dns";
 import { Handler } from "express";
 import isbot from "isbot";
 import generate from "nanoid/generate";
-import ua from "universal-analytics";
 import URL from "url";
 import urlRegex from "url-regex-safe";
 import { promisify } from "util";
@@ -177,9 +176,8 @@ export const goToLink: Handler = async (req, res, next) => {
     });
   }
 
-  if (env.GOOGLE_ANALYTICS_UNIVERSAL && !isBot) {
-    const visitor = ua(env.GOOGLE_ANALYTICS_UNIVERSAL);
-    visitor
+  if (req.visitor && !isBot) {
+    req.visitor
       .pageview({
         dp: `/${address}`,
         ua: req.headers["user-agent"],
