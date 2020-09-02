@@ -7,5 +7,4 @@ data:
   DD_SERVICE: "pjps.to"
   DEFAULT_DOMAIN: "pjps.to"
   NODE_ENV: "production"
-  REDIS_DB: "2"
   SITE_NAME: "PJPS"

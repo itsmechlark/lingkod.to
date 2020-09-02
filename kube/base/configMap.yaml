@@ -19,7 +19,6 @@ data:
   MAIL_PORT: "587"
   MAIL_SECURE: "false"
   NODE_ENV: "staging"
-  REDIS_DB: "0"
   REPORT_EMAIL: "security@itsmechlark.com"
   USER_LIMIT_PER_DAY: "50"
   SITE_NAME: "Kutt"

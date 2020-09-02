@@ -7,5 +7,4 @@ data:
   DD_SERVICE: "lingkod.to"
   DEFAULT_DOMAIN: "lingkod.to"
   NODE_ENV: "production"
-  REDIS_DB: "1"
   SITE_NAME: "Lingkod"
