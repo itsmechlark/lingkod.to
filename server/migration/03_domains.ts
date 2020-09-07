@@ -2,7 +2,7 @@ import env from "../env";
 
 import { v1 as NEO4J } from "neo4j-driver";
 import PQueue from "p-queue";
-import knex from "knex";
+import knex from "../knex";
 
 const queue = new PQueue({ concurrency: 1 });
 
@@ -11,21 +11,11 @@ const neo4j = NEO4J.driver(
   env.NEO4J_DB_URI,
   NEO4J.auth.basic(env.NEO4J_DB_USERNAME, env.NEO4J_DB_PASSWORD)
 );
-// 2. Connect to Postgres database
-const postgres = knex({
-  client: "postgres",
-  connection: {
-    host: env.DB_HOST,
-    database: env.DB_NAME,
-    user: env.DB_USER,
-    password: env.DB_PASSWORD
-  }
-});
 
 (async function() {
   const startTime = Date.now();
 
-  // 3. [NEO4J] Get all domain
+  // 2. [NEO4J] Get all domain
   const session = neo4j.session();
   session
     .run(
@@ -37,10 +27,10 @@ const postgres = knex({
           const domain = record.get("domain").properties;
           const email = record.get("email");
 
-          // 4. [Postgres] Get user ID
+          // 3. [Postgres] Get user ID
           const user =
             email &&
-            (await postgres<User>("users")
+            (await knex<User>("users")
               .where({ email })
               .first());
 
@@ -57,17 +47,17 @@ const postgres = knex({
             ...(user_id && { user_id })
           };
 
-          const exists = await postgres<Domain>("domains")
+          const exists = await knex<Domain>("domains")
             .where({
               address
             })
             .first();
           if (exists) {
-            await postgres<Domain>("domains")
+            await knex<Domain>("domains")
               .where("id", exists.id)
               .update(data);
           } else {
-            await postgres<Domain>("domains").insert(data);
+            await knex<Domain>("domains").insert(data);
           }
         });
       },

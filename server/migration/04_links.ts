@@ -3,7 +3,7 @@ import env from "../env";
 import { v1 as NEO4J } from "neo4j-driver";
 import { startOfHour } from "date-fns";
 import PQueue from "p-queue";
-import knex from "knex";
+import knex from "../knex";
 
 let count = 0;
 const queue = new PQueue({ concurrency: 5 });
@@ -16,21 +16,10 @@ const neo4j = NEO4J.driver(
   NEO4J.auth.basic(env.NEO4J_DB_USERNAME, env.NEO4J_DB_PASSWORD)
 );
 
-// 2. Connect to Postgres database
-const postgres = knex({
-  client: "postgres",
-  connection: {
-    host: env.DB_HOST,
-    database: env.DB_NAME,
-    user: env.DB_USER,
-    password: env.DB_PASSWORD
-  }
-});
-
 (async function() {
   const startTime = Date.now();
 
-  // 3. [NEO4J] Get all links
+  // 2. [NEO4J] Get all links
   const session = neo4j.session();
   const { records } = await session.run(
     "MATCH (l:URL) WITH COUNT(l) as count RETURN count"
@@ -65,7 +54,7 @@ const postgres = knex({
                   const address = record.get("domain");
                   const stats = record.get("stats");
 
-                  // 4. Merge and normalize stats based on hour
+                  // 3. Merge and normalize stats based on hour
                   const visits: Record<
                     string,
                     Record<string, number | Record<string, number>>
@@ -112,19 +101,19 @@ const postgres = knex({
                     }
                   });
 
-                  // 5. [Postgres] Find matching user and or domain
+                  // 4. [Postgres] Find matching user and or domain
                   const [user, domain] = await Promise.all([
                     email &&
-                      postgres<User>("users")
+                      knex<User>("users")
                         .where({ email })
                         .first(),
                     address &&
-                      postgres<Domain>("domains")
+                      knex<Domain>("domains")
                         .where({ address })
                         .first()
                   ]);
 
-                  // 6. [Postgres] Create link
+                  // 5. [Postgres] Create link
                   const data = {
                     address: link.id,
                     banned: !!link.banned,
@@ -136,7 +125,7 @@ const postgres = knex({
                     ...(link.createdAt && { created_at: link.createdAt })
                   };
 
-                  const res = await postgres<Link>("links").insert(data, "id");
+                  const res = await knex<Link>("links").insert(data, "id");
                   const link_id = res[0];
 
                   // 7. [Postgres] Create visits
@@ -163,7 +152,7 @@ const postgres = knex({
                     })
                   );
 
-                  await postgres<Visit>("visits").insert(newVisits);
+                  await knex<Visit>("visits").insert(newVisits);
                 });
               },
               onCompleted() {

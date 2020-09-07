@@ -1,16 +1,20 @@
-import { cleanEnv, num, str, bool } from "envalid";
+import { cleanEnv, num, str, bool, host, port } from "envalid";
 
 const env = cleanEnv(process.env, {
   PORT: num({ default: 3000 }),
   SITE_NAME: str({ example: "Kutt" }),
   DEFAULT_DOMAIN: str({ example: "kutt.it" }),
   LINK_LENGTH: num({ default: 6 }),
-  DB_HOST: str({ default: "localhost" }),
-  DB_PORT: num({ default: 5432 }),
+  DB_HOST: host({ default: "localhost" }),
+  DB_PORT: port({ default: 5432 }),
   DB_NAME: str({ default: "postgres" }),
   DB_USER: str(),
   DB_PASSWORD: str(),
   DB_SSL: bool({ default: false }),
+  DB_SSL_REJECTUNAUTH: bool({ default: true }),
+  DB_SSL_CA: str({ default: "" }),
+  DB_SSL_KEY: str({ default: "" }),
+  DB_SSL_CERT: str({ default: "" }),
   DB_POOL_MIN: num({ default: 2 }),
   DB_POOL_MAX: num({ default: 10 }),
   NEO4J_DB_URI: str({ default: "" }),
