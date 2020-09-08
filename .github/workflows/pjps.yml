@@ -92,7 +92,7 @@ jobs:
       - name: Deploy
         run: |-
           cd ./kube/overlays/${PROJECT_NAME}/
-          kustomize edit add annotation com.itsmechlark.kutt.release:$GITHUB_SHA
+          kustomize edit add annotation com.itsmechlark.kutt/release:$GITHUB_SHA
           kustomize edit set image kutt/kutt=docker.pkg.github.com/${{ github.repository }}/$PROJECT_NAME:$GITHUB_SHA
           kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/${PROJECT_NAME}-kutt
