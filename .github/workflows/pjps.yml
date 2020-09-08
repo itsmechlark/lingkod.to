@@ -48,6 +48,7 @@ jobs:
         run: |-
           docker build \
             --tag "docker.pkg.github.com/${{ github.repository }}/$PROJECT_NAME:$GITHUB_SHA" \
+            --tag "docker.pkg.github.com/${{ github.repository }}/$PROJECT_NAME:latest" \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" \
             .
@@ -56,6 +57,7 @@ jobs:
       - name: Publish
         run: |-
           docker push "docker.pkg.github.com/${{ github.repository }}/$PROJECT_NAME:$GITHUB_SHA"
+          docker push "docker.pkg.github.com/${{ github.repository }}/$PROJECT_NAME:latest"
       
       # Download and Install DigitalOcean CLI
       - name: Install DigitalOcean CLI
